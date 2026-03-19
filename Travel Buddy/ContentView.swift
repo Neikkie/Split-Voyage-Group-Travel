@@ -6,19 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @State private var showSplash = true
+    @State private var showOnboarding = !UserManager.shared.hasCompletedOnboarding
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            if showSplash {
+                SplashScreenView {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        showSplash = false
+                    }
+                }
+                .transition(.opacity)
+            } else if showOnboarding {
+                UserProfileSetupView {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        showOnboarding = false
+                    }
+                }
+                .transition(.opacity)
+            } else {
+                TripListView()
+                    .transition(.opacity)
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [Trip.self, TravelBuddy.self, Expense.self])
 }
