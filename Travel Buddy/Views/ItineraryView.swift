@@ -167,6 +167,11 @@ struct ItineraryView: View {
                 }
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            BannerViewContainer(bannerAdType: .itienaryViewAd)
+                .frame(height: 60)
+                .background(Color(.systemBackground))
+        }
         .sheet(isPresented: $showingAddItem) {
             AddTripItemView(trip: trip)
         }

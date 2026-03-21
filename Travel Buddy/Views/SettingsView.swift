@@ -234,6 +234,11 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .safeAreaInset(edge: .bottom) {
+                BannerViewContainer(bannerAdType: .randomAd)
+                    .frame(height: 60)
+                    .background(Color(.systemBackground))
+            }
             .alert("Clear All Data", isPresented: $showingClearDataAlert) {
                 Button("Cancel", role: .cancel) {}
                 Button("Clear All Data", role: .destructive) {
