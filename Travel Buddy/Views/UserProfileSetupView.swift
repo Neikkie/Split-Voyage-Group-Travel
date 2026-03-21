@@ -40,7 +40,7 @@ struct UserProfileSetupView: View {
                         .foregroundStyle(.white)
                         .shadow(color: .black.opacity(0.2), radius: 10)
                     
-                    Text("Welcome to Travel Buddy!")
+                    Text("Welcome to Split Voyage Group Travel!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)

@@ -64,17 +64,29 @@ struct WelcomeView: View {
                             .font(.title2)
                             .foregroundStyle(.secondary)
                             .opacity(animateIcon ? 1 : 0)
-                        
-                        Text("Split Voyage")
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .purple],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
+
+                        VStack(spacing: 4) {
+                            Text("Split Voyage")
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.blue, .purple],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
                                 )
-                            )
-                            .opacity(animateIcon ? 1 : 0)
+
+                            Text("Group Travel")
+                                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.purple, .pink],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                        }
+                        .opacity(animateIcon ? 1 : 0)
                         
                         Text("Split expenses easily on group trips")
                             .font(.title3)

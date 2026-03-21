@@ -214,7 +214,7 @@ struct SettingsView: View {
                         showingAbout = true
                     } label: {
                         HStack {
-                            Label("About Split Voyage", systemImage: "info.circle")
+                            Label("About Split Voyage Group Travel", systemImage: "info.circle")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .font(.caption)
