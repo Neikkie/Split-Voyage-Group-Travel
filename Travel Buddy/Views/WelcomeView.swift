@@ -65,7 +65,7 @@ struct WelcomeView: View {
                             .foregroundStyle(.secondary)
                             .opacity(animateIcon ? 1 : 0)
                         
-                        Text("Travel Buddy")
+                        Text("Split Voyage")
                             .font(.system(size: 48, weight: .bold, design: .rounded))
                             .foregroundStyle(
                                 LinearGradient(

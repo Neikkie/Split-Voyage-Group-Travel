@@ -307,7 +307,7 @@ struct ExportShareView: View {
         }
         
         text += "\n\n" + String(repeating: "=", count: 40)
-        text += "\n✨ Shared via Travel Buddy App\n"
+        text += "\n✨ Shared via Split Voyage App\n"
         
         let fileName = "\(trip.name.replacingOccurrences(of: " ", with: "_"))_TravelBuddy.txt"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
@@ -342,7 +342,7 @@ struct ExportShareView: View {
             text += "   \(buddy.name): \(trip.currency.format(balance))\n"
         }
         
-        text += "\n\n✨ Shared via Travel Buddy App"
+        text += "\n\n✨ Shared via Split Voyage App"
         
         let fileName = "\(trip.name.replacingOccurrences(of: " ", with: "_"))_summary.txt"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
