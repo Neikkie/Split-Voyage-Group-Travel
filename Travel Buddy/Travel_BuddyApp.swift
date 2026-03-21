@@ -7,6 +7,9 @@
 
 import SwiftUI
 import SwiftData
+import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 @main
 struct Travel_BuddyApp: App {
@@ -72,6 +75,15 @@ struct Travel_BuddyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                    if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+                        ATTrackingManager.requestTrackingAuthorization { _ in
+                            MobileAds.shared.start(completionHandler: nil)
+                        }
+                    } else {
+                        MobileAds.shared.start(completionHandler: nil)
+                    }
+                }
                 .preferredColorScheme(.light)
                 .onAppear {
                     applyLightMode()

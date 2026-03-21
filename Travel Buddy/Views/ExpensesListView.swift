@@ -86,6 +86,11 @@ struct ExpensesListView: View {
                 .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedSegment)
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            BannerViewContainer(bannerAdType: .randomAd)
+                .frame(height: 60)
+                .background(Color(.systemBackground))
+        }
         .sheet(isPresented: $showingAddExpense) {
             AddExpenseView(trip: trip)
         }
@@ -145,24 +150,6 @@ struct ExpensesListView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                     .padding(.bottom, 100)
-                }
-            }
-            
-            // Floating Action Button
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    FloatingActionButton(
-                        icon: "plus",
-                        label: "Add Expense",
-                        action: {
-                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            showingAddExpense = true
-                        }
-                    )
-                    .padding(.trailing, 20)
-                    .padding(.bottom, 20)
                 }
             }
         }

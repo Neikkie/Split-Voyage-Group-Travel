@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6DF220D32F6E11F60033181E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF220D22F6E11F60033181E /* GoogleMobileAds */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		6D8833082F62B0A100753F25 /* Travel Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DF220D32F6E11F60033181E /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "Travel Buddy";
 			packageProductDependencies = (
+				6DF220D22F6E11F60033181E /* GoogleMobileAds */,
 			);
 			productName = "Travel Buddy";
 			productReference = 6D8833082F62B0A100753F25 /* Travel Buddy.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 6D8832FF2F62B0A100753F25;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6DF220D12F6E11F60033181E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6D8833092F62B0A100753F25 /* Products */;
 			projectDirPath = "";
@@ -256,6 +265,8 @@
 				DEVELOPMENT_TEAM = JBF268KK9R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Travel-Buddy-Info.plist";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Do you allow us to use your infomation to allow ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +299,8 @@
 				DEVELOPMENT_TEAM = JBF268KK9R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Travel-Buddy-Info.plist";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Do you allow us to use your infomation to allow ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -332,6 +345,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6DF220D12F6E11F60033181E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6DF220D22F6E11F60033181E /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DF220D12F6E11F60033181E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6D8833002F62B0A100753F25 /* Project object */;
 }

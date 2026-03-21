@@ -304,6 +304,11 @@ struct SummaryView: View {
             .padding()
         }
         .navigationTitle("Summary")
+        .safeAreaInset(edge: .bottom) {
+            BannerViewContainer(bannerAdType: .testViewAd)
+                .frame(height: 60)
+                .background(Color(.systemBackground))
+        }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                 animateCards = true

@@ -205,7 +205,7 @@ struct TripListView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     .padding(.trailing, 20)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 80)
                     }
                 }
             }
@@ -217,6 +217,11 @@ struct TripListView: View {
                         Image(systemName: "gearshape")
                     }
                 }
+            }
+            .safeAreaInset(edge: .bottom) {
+                BannerViewContainer(bannerAdType: .tripCardPageAd)
+                    .frame(height: 60)
+                    .background(Color(.systemBackground))
             }
             .sheet(isPresented: $showingAddTrip) {
                 AddTripView()
