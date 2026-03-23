@@ -1,6 +1,6 @@
 //
 //  WelcomeView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -19,7 +19,7 @@ struct WelcomeView: View {
     @State private var backgroundOffset: CGFloat = 0
     
     private let features = [
-        (icon: "person.2.fill", title: "Add Travel Buddies", description: "Invite your friends and split expenses fairly", emoji: "👥", bgIcon: "person.3.fill", color: Color.blue),
+        (icon: "person.2.fill", title: "Add Group Members", description: "Invite your friends and split expenses fairly", emoji: "👥", bgIcon: "person.3.fill", color: Color.blue),
         (icon: "camera.fill", title: "Scan Receipts", description: "Snap a photo and auto-detect amounts instantly", emoji: "📸", bgIcon: "doc.text.magnifyingglass", color: Color.purple),
         (icon: "chart.bar.fill", title: "Track & Settle", description: "Real-time balance updates for everyone", emoji: "💰", bgIcon: "chart.line.uptrend.xyaxis", color: Color.green),
         (icon: "airplane.departure.fill", title: "Plan Trips", description: "Organize flights, hotels, and activities", emoji: "✈️", bgIcon: "map.fill", color: Color.orange),
@@ -65,7 +65,7 @@ struct WelcomeView: View {
                             .foregroundStyle(.secondary)
                             .opacity(animateIcon ? 1 : 0)
                         
-                        Text("Travel Buddy")
+                        Text("Split Voyage Group Travel")
                             .font(.system(size: 48, weight: .bold, design: .rounded))
                             .foregroundStyle(
                                 LinearGradient(

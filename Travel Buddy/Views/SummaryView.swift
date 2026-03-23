@@ -1,11 +1,12 @@
 //
 //  SummaryView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
 
 import SwiftUI
+import SwiftData
 import Charts
 
 struct Settlement: Identifiable {
@@ -106,7 +107,7 @@ struct SummaryView: View {
                             Image(systemName: "person.2.slash")
                                 .font(.title2)
                                 .foregroundStyle(.secondary)
-                            Text("No travel buddies added yet")
+                            Text("No group members added yet")
                                 .foregroundStyle(.secondary)
                         }
                         .frame(maxWidth: .infinity)
@@ -654,6 +655,167 @@ struct SummaryView: View {
 
 // MARK: - Supporting Views
 
+// MARK: - Payment Record View
+struct PaymentRecordView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
+    let trip: Trip
+    let buddy: TravelBuddy
+    let balance: Double
+    
+    @State private var amount: String = ""
+    @State private var notes: String = ""
+    @State private var date = Date()
+    
+    // Find who this buddy owes money to
+    private var creditors: [(buddy: TravelBuddy, amount: Double)] {
+        var result: [(buddy: TravelBuddy, amount: Double)] = []
+        
+        for expense in trip.expenses {
+            guard let paidByID = expense.paidByBuddyID,
+                  paidByID != buddy.id,
+                  expense.participantIDs.contains(buddy.id),
+                  let paidByBuddy = trip.travelBuddies.first(where: { $0.id == paidByID }) else {
+                continue
+            }
+            
+            let amountOwed = expense.amountForBuddy(buddy.id)
+            let amountPaid = expense.amountPaidByBuddy(buddy.id)
+            let remaining = amountOwed - amountPaid
+            
+            if remaining > 0.01 {
+                if let index = result.firstIndex(where: { $0.buddy.id == paidByBuddy.id }) {
+                    result[index].amount += remaining
+                } else {
+                    result.append((paidByBuddy, remaining))
+                }
+            }
+        }
+        
+        return result.sorted { $0.amount > $1.amount }
+    }
+    
+    @State private var selectedCreditorID: UUID?
+    
+    var body: some View {
+        Form {
+            Section {
+                HStack {
+                    Image(systemName: "info.circle.fill")
+                        .foregroundStyle(.blue)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(buddy.name) owes")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                        Text(trip.currency.format(balance))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.orange)
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+            
+            Section("Payment Amount") {
+                HStack {
+                    Text(trip.currency.symbol)
+                    TextField("Amount", text: $amount)
+                        .keyboardType(.decimalPad)
+                }
+                
+                DatePicker("Date", selection: $date, displayedComponents: .date)
+            }
+            
+            Section("Pay To") {
+                if creditors.isEmpty {
+                    Text("No outstanding debts")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(creditors, id: \.buddy.id) { creditor in
+                        Button {
+                            selectedCreditorID = creditor.buddy.id
+                        } label: {
+                            HStack {
+                                Image(systemName: selectedCreditorID == creditor.buddy.id ? "checkmark.circle.fill" : "circle")
+                                    .foregroundStyle(selectedCreditorID == creditor.buddy.id ? .blue : .gray)
+                                
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(creditor.buddy.name)
+                                        .foregroundStyle(.primary)
+                                    Text("Owed: \(trip.currency.format(creditor.amount))")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Section("Notes (Optional)") {
+                TextField("Add notes", text: $notes, axis: .vertical)
+                    .lineLimit(3...5)
+            }
+        }
+        .navigationTitle("Record Payment")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    recordPayment()
+                }
+                .disabled(!canSave)
+            }
+        }
+        .onAppear {
+            amount = String(format: "%.2f", balance)
+            if let firstCreditor = creditors.first {
+                selectedCreditorID = firstCreditor.buddy.id
+            }
+        }
+    }
+    
+    private var canSave: Bool {
+        guard let amountValue = Double(amount),
+              amountValue > 0,
+              let _ = selectedCreditorID else {
+            return false
+        }
+        return true
+    }
+    
+    private func recordPayment() {
+        guard let amountValue = Double(amount),
+              let toBuddyID = selectedCreditorID else {
+            return
+        }
+        
+        let payment = Payment(
+            amount: amountValue,
+            fromBuddyID: buddy.id,
+            toBuddyID: toBuddyID,
+            notes: notes,
+            date: date
+        )
+        
+        payment.trip = trip
+        modelContext.insert(payment)
+        trip.payments.append(payment)
+        
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        dismiss()
+    }
+}
+
 struct StatBadge: View {
     let icon: String
     let value: String
@@ -695,12 +857,16 @@ struct BuddyBalanceCard: View {
     let expenseCount: Int
     let index: Int
     
+    @State private var showingPaymentSheet = false
+    
     private var balance: Double {
         trip.balanceForBuddy(buddy)
     }
     
     private var balanceLabel: String {
-        if abs(balance) < 0.01 {
+        if abs(balance) < 0.01 && trip.expenses.isEmpty {
+            return "No expenses yet"
+        } else if abs(balance) < 0.01 {
             return "Settled"
         } else if balance > 0 {
             return "is owed"
@@ -710,41 +876,110 @@ struct BuddyBalanceCard: View {
     }
     
     var body: some View {
-        HStack(spacing: 16) {
-            // Avatar Circle
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [avatarColor.opacity(0.3), avatarColor.opacity(0.15)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
+        VStack(spacing: 12) {
+            HStack(spacing: 16) {
+                // Avatar Circle
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [avatarColor.opacity(0.3), avatarColor.opacity(0.15)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
-                    )
-                    .frame(width: 50, height: 50)
-                Text(buddy.name.prefix(1).uppercased())
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundStyle(avatarColor)
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(buddy.name)
-                    .font(.headline)
-                    .fontWeight(.semibold)
+                        .frame(width: 50, height: 50)
+                    Text(buddy.name.prefix(1).uppercased())
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundStyle(avatarColor)
+                }
                 
-                Text(balanceLabel)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(buddy.name)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    Text(balanceLabel)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(trip.currency.format(abs(balance)))
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundStyle(abs(balance) < 0.01 ? .green : (balance > 0 ? .blue : .orange))
+                    
+                    // Show expense count
+                    if expenseCount > 0 {
+                        Text("\(expenseCount) expense\(expenseCount == 1 ? "" : "s")")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
             
-            Spacer()
-            
-            VStack(alignment: .trailing, spacing: 4) {
-                Text(trip.currency.format(abs(balance)))
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundStyle(abs(balance) < 0.01 ? .green : .primary)
+            // Show detailed breakdown
+            if abs(balance) > 0.01 {
+                Divider()
+                
+                HStack(spacing: 12) {
+                    // Total spent
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Total Paid")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(trip.currency.format(totalPaidByBuddy))
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                    }
+                    
+                    Spacer()
+                    
+                    // Total share
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("Total Share")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(trip.currency.format(totalShareForBuddy))
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                    }
+                }
+                .padding(.top, 4)
+                
+                // Record payment button - only show if buddy owes money
+                if balance < -0.01 {
+                    Button {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        showingPaymentSheet = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.subheadline)
+                            Text("Record Payment")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                        }
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(
+                            LinearGradient(
+                                colors: [.blue, .purple],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(10)
+                    }
+                    .padding(.top, 4)
+                }
             }
         }
         .padding(16)
@@ -752,6 +987,33 @@ struct BuddyBalanceCard: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(.ultraThinMaterial)
         )
+        .sheet(isPresented: $showingPaymentSheet) {
+            NavigationStack {
+                PaymentRecordView(trip: trip, buddy: buddy, balance: abs(balance))
+            }
+        }
+    }
+    
+    // Calculate total amount paid by this buddy across all expenses
+    private var totalPaidByBuddy: Double {
+        var total = 0.0
+        for expense in trip.expenses {
+            if expense.paidByBuddyID == buddy.id {
+                total += expense.totalAmount
+            }
+        }
+        return total
+    }
+    
+    // Calculate total share (what they should pay) across all expenses
+    private var totalShareForBuddy: Double {
+        var total = 0.0
+        for expense in trip.expenses {
+            if expense.participantIDs.contains(buddy.id) {
+                total += expense.amountForBuddy(buddy.id)
+            }
+        }
+        return total
     }
     
     private var avatarColor: Color {

@@ -1,6 +1,6 @@
 //
 //  DataStorageView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -167,7 +167,7 @@ struct DataStorageView: View {
                                 
                                 StorageStatRow(
                                     icon: "person.2.fill",
-                                    label: "Travel Buddies",
+                                    label: "Group Members",
                                     count: buddies.count,
                                     color: .green
                                 )

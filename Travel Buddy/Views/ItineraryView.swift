@@ -1,6 +1,6 @@
 //
 //  ItineraryView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -83,6 +83,25 @@ struct ItineraryView: View {
                                 TripItemRow(item: item, trip: trip)
                             }
                             .buttonStyle(.plain)
+                            .contextMenu {
+                                if canEdit {
+                                    Button {
+                                        editingItem = item
+                                    } label: {
+                                        Label("Edit", systemImage: "pencil")
+                                    }
+                                }
+                                
+                                if trip.canDelete(userID: UserManager.shared.currentUserID) {
+                                    Button(role: .destructive) {
+                                        if let index = dateGroup.value.firstIndex(where: { $0.id == item.id }) {
+                                            deleteItems(at: IndexSet(integer: index), from: dateGroup.value)
+                                        }
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+                            }
                             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
@@ -197,12 +216,20 @@ struct ItineraryView: View {
             if let tripIndex = trip.tripItems.firstIndex(where: { $0.id == items[index].id }) {
                 let item = trip.tripItems[tripIndex]
                 
-                // Delete linked expense
+                // Delete linked expense and all its splits
                 // First check if there's a direct link
                 if let linkedExpense = item.linkedExpense {
+                    // Delete all expense splits first
+                    for split in linkedExpense.splits {
+                        modelContext.delete(split)
+                    }
+                    
+                    // Remove from trip's expenses array
                     if let expenseIndex = trip.expenses.firstIndex(where: { $0.id == linkedExpense.id }) {
                         trip.expenses.remove(at: expenseIndex)
                     }
+                    
+                    // Delete the expense
                     modelContext.delete(linkedExpense)
                 } else if item.cost > 0 {
                     // Fallback: Find expense that links back to this item OR matches by name/cost
@@ -212,19 +239,30 @@ struct ItineraryView: View {
                         // Or match by name and cost (for old expenses without proper linking)
                         (expense.name == item.name && abs(expense.totalAmount - item.cost) < 0.01)
                     }) {
+                        // Delete all expense splits first
+                        for split in matchingExpense.splits {
+                            modelContext.delete(split)
+                        }
+                        
+                        // Remove from trip's expenses array
                         if let expenseIndex = trip.expenses.firstIndex(where: { $0.id == matchingExpense.id }) {
                             trip.expenses.remove(at: expenseIndex)
                         }
+                        
+                        // Delete the expense
                         modelContext.delete(matchingExpense)
                     }
                 }
                 
-                modelContext.delete(item)
+                // Remove itinerary item from trip's array
                 trip.tripItems.remove(at: tripIndex)
+                
+                // Delete the itinerary item
+                modelContext.delete(item)
             }
         }
         
-        // Save the context
+        // Save the context to persist all changes
         do {
             try modelContext.save()
             UINotificationFeedbackGenerator().notificationOccurred(.success)

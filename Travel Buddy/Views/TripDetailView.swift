@@ -1,6 +1,6 @@
 //
 //  TripDetailView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -15,6 +15,14 @@ struct TripDetailView: View {
     @State private var showingAddExpense = false
     @State private var showingExportShare = false
     @State private var showingEditTrip = false
+    @State private var showingAddBuddyPrompt = false
+    @State private var hasShownBuddyPrompt = false
+    
+    // Check if we should show the add buddy prompt
+    private var shouldShowBuddyPrompt: Bool {
+        // Only show if trip has 1 or fewer buddies (just the current user)
+        trip.travelBuddies.count <= 1 && !hasShownBuddyPrompt
+    }
     
     var body: some View {
         ZStack {
@@ -97,6 +105,18 @@ struct TripDetailView: View {
         .sheet(isPresented: $showingEditTrip) {
             EditTripView(trip: trip)
         }
+        .sheet(isPresented: $showingAddBuddyPrompt) {
+            AddBuddyPromptView(trip: trip, showingPrompt: $showingAddBuddyPrompt)
+        }
+        .onAppear {
+            // Show buddy prompt after a short delay if needed
+            if shouldShowBuddyPrompt {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    showingAddBuddyPrompt = true
+                    hasShownBuddyPrompt = true
+                }
+            }
+        }
     }
 }
 
@@ -116,9 +136,9 @@ struct BuddiesListView: View {
             if trip.travelBuddies.isEmpty {
                 EmptyStateView(
                     icon: "person.2.fill",
-                    title: "No Travel Buddies Yet",
+                    title: "No Group Members Yet",
                     message: "Add your friends and family to split expenses and track who's joining you on this adventure!",
-                    actionTitle: "Add Travel Buddy",
+                    actionTitle: "Add Group Member",
                     action: {
                         showingAddBuddy = true
                     }
@@ -488,6 +508,232 @@ struct EmptyStateView: View {
             Spacer()
         }
         .padding()
+    }
+}
+
+// MARK: - Add Buddy Prompt View
+struct AddBuddyPromptView: View {
+    @Environment(\.modelContext) private var modelContext
+    let trip: Trip
+    @Binding var showingPrompt: Bool
+    @State private var showingAddBuddy = false
+    @State private var animateContent = false
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                // Gradient background
+                LinearGradient(
+                    colors: [
+                        Color.blue.opacity(0.08),
+                        Color.purple.opacity(0.06),
+                        Color.pink.opacity(0.04)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                VStack(spacing: 32) {
+                    Spacer()
+                    
+                    // Animated icon
+                    ZStack {
+                        // Pulsing circles
+                        ForEach(0..<3, id: \.self) { index in
+                            Circle()
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.blue.opacity(0.3), .purple.opacity(0.2)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 3
+                                )
+                                .frame(width: 120 + CGFloat(index * 25), height: 120 + CGFloat(index * 25))
+                                .scaleEffect(animateContent ? 1.1 : 0.9)
+                                .opacity(1.0 - Double(index) * 0.25)
+                        }
+                        
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.blue.opacity(0.2), .purple.opacity(0.15)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 120, height: 120)
+                        
+                        Image(systemName: "person.2.fill")
+                            .font(.system(size: 55))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .purple],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .scaleEffect(animateContent ? 1.0 : 0.8)
+                    }
+                    .scaleEffect(animateContent ? 1.0 : 0.5)
+                    .opacity(animateContent ? 1 : 0)
+                    
+                    // Title and message
+                    VStack(spacing: 16) {
+                        Text("Add Your Group Members")
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .purple],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Start by adding friends and family who'll join you on this trip. You'll be able to split expenses and track costs together!")
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                    }
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 20)
+                    
+                    // Benefits list
+                    VStack(alignment: .leading, spacing: 16) {
+                        BenefitRow(
+                            icon: "receipt.fill",
+                            title: "Split Expenses",
+                            description: "Track who paid and split costs fairly",
+                            color: .blue
+                        )
+                        
+                        BenefitRow(
+                            icon: "chart.bar.fill",
+                            title: "See Balances",
+                            description: "Know who owes what in real-time",
+                            color: .purple
+                        )
+                        
+                        BenefitRow(
+                            icon: "arrow.triangle.2.circlepath",
+                            title: "Stay Synced",
+                            description: "Share trip updates with everyone",
+                            color: .green
+                        )
+                    }
+                    .padding(24)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.ultraThinMaterial)
+                            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
+                    )
+                    .padding(.horizontal, 24)
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 30)
+                    
+                    Spacer()
+                    
+                    // Action buttons
+                    VStack(spacing: 12) {
+                        Button {
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            showingAddBuddy = true
+                        } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: "person.badge.plus.fill")
+                                    .font(.title3)
+                                Text("Add Group Members")
+                                    .fontWeight(.bold)
+                            }
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(
+                                LinearGradient(
+                                    colors: [.blue, .purple],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .cornerRadius(16)
+                            .shadow(color: .blue.opacity(0.4), radius: 12, x: 0, y: 6)
+                        }
+                        
+                        Button {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            showingPrompt = false
+                        } label: {
+                            Text("I'll Add Them Later")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
+                                .padding(.vertical, 12)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 32)
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 20)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingPrompt = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddBuddy) {
+                AddBuddyView(trip: trip)
+            }
+            .onAppear {
+                withAnimation(.spring(response: 0.8, dampingFraction: 0.7)) {
+                    animateContent = true
+                }
+            }
+        }
+    }
+}
+
+struct BenefitRow: View {
+    let icon: String
+    let title: String
+    let description: String
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(color.opacity(0.15))
+                    .frame(width: 50, height: 50)
+                
+                Image(systemName: icon)
+                    .font(.title3)
+                    .foregroundStyle(color)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.primary)
+                
+                Text(description)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+        }
     }
 }
 

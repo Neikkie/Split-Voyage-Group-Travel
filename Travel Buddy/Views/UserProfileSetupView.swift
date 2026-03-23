@@ -1,6 +1,6 @@
 //
 //  UserProfileSetupView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -40,7 +40,7 @@ struct UserProfileSetupView: View {
                         .foregroundStyle(.white)
                         .shadow(color: .black.opacity(0.2), radius: 10)
                     
-                    Text("Welcome to Travel Buddy!")
+                    Text("Welcome to Split Voyage Group Travel!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)

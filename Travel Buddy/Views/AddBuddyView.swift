@@ -1,6 +1,6 @@
 //
 //  AddBuddyView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -18,11 +18,11 @@ struct AddBuddyView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Buddy Details") {
+                Section("Member Details") {
                     TextField("Name", text: $buddyName)
                 }
             }
-            .navigationTitle("Add Travel Buddy")
+            .navigationTitle("Add Group Member")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

@@ -1,12 +1,13 @@
 //
 //  SettingsView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
 
 import SwiftUI
 import SwiftData
+import WebKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
@@ -23,6 +24,9 @@ struct SettingsView: View {
     @State private var editingUserName = false
     @State private var showingLanguageSelection = false
     @State private var showingExchangeRates = false
+    @State private var showingHomePage = false
+    @State private var showingPrivacyPolicy = false
+    @State private var showingTermsAndConditions = false
     
     @ObservedObject var localization = LocalizationManager.shared
     
@@ -186,14 +190,7 @@ struct SettingsView: View {
                             .fontWeight(.semibold)
                     }
                     
-                    HStack {
-                        Label("Cloud Sync", systemImage: "icloud")
-                        Spacer()
-                        Text("Disabled")
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
-                    }
-                    
+
                     HStack {
                         Label("Analytics", systemImage: "chart.bar")
                         Spacer()
@@ -208,13 +205,57 @@ struct SettingsView: View {
                     Text("Your data stays on your device. No tracking, no cloud storage, complete privacy.")
                 }
                 
+                // Links
+                Section {
+                    Button {
+                        showingHomePage = true
+                    } label: {
+                        HStack {
+                            Label("Home Page", systemImage: "house.fill")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.square")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+                    
+                    Button {
+                        showingPrivacyPolicy = true
+                    } label: {
+                        HStack {
+                            Label("Privacy Policy", systemImage: "hand.raised.fill")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.square")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+                    
+                    Button {
+                        showingTermsAndConditions = true
+                    } label: {
+                        HStack {
+                            Label("Terms & Conditions", systemImage: "doc.text.fill")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.square")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+                } header: {
+                    Text("Information")
+                }
+                
                 // About
                 Section {
                     Button {
                         showingAbout = true
                     } label: {
                         HStack {
-                            Label("About Travel Buddy", systemImage: "info.circle")
+                            Label("About Split Voyage Group Travel", systemImage: "info.circle")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .font(.caption)
@@ -255,6 +296,15 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showingLanguageSelection) {
                 LanguageSelectionView()
+            }
+            .sheet(isPresented: $showingHomePage) {
+                WebView(url: "https://neikkie.github.io/Split-Voyage-Group-Travel/")
+            }
+            .sheet(isPresented: $showingPrivacyPolicy) {
+                WebView(url: "https://neikkie.github.io/Split-Voyage-Group-Travel/privacy.html")
+            }
+            .sheet(isPresented: $showingTermsAndConditions) {
+                WebView(url: "https://neikkie.github.io/Split-Voyage-Group-Travel/terms.html")
             }
         }
     }
@@ -313,7 +363,7 @@ struct AboutView: View {
                         .padding(.top, 32)
                     
                     VStack(spacing: 8) {
-                        Text("Travel Buddy")
+                        Text("Split Voyage Group Travel")
                             .font(.title)
                             .fontWeight(.bold)
                         
@@ -328,7 +378,7 @@ struct AboutView: View {
                             .font(.headline)
                             .padding(.horizontal)
                         
-                        AboutFeatureRow(icon: "person.2.fill", title: "Split Expenses", description: "Easily divide costs among travel buddies")
+                        AboutFeatureRow(icon: "person.2.fill", title: "Split Expenses", description: "Easily divide costs among group members")
                         AboutFeatureRow(icon: "camera.fill", title: "Receipt Scanning", description: "OCR technology extracts amounts automatically")
                         AboutFeatureRow(icon: "dollarsign.circle.fill", title: "Track Payments", description: "Record settlements and balance tracking")
                         AboutFeatureRow(icon: "chart.bar.fill", title: "Smart Analytics", description: "Visual breakdowns and summaries")
@@ -350,7 +400,7 @@ struct AboutView: View {
                         Text("Your Privacy Matters")
                             .font(.headline)
                         
-                        Text("Travel Buddy stores all data locally on your device. No cloud services, no analytics, no tracking. Your trip data stays yours.")
+                        Text("Split Voyage Group Travel stores all data locally on your device. No cloud services, no analytics, no tracking. Your trip data stays yours.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
@@ -358,7 +408,7 @@ struct AboutView: View {
                     }
                     .padding(.vertical, 24)
                     
-                    Text("© 2026 Travel Buddy")
+                    Text("© 2026 Split Voyage Group Travel")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 32)
@@ -447,7 +497,7 @@ struct ExportAllDataView: View {
                     HStack {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text("\(trips.reduce(0) { $0 + $1.travelBuddies.count }) travel buddies")
+                        Text("\(trips.reduce(0) { $0 + $1.travelBuddies.count }) group members")
                     }
                 }
                 .padding()
@@ -522,6 +572,58 @@ struct ExportAllDataView: View {
 struct ShareItemWrapper: Identifiable {
     let id = UUID()
     let url: URL
+}
+
+// Web View for in-app browser
+struct WebView: View {
+    let url: String
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            WebViewRepresentable(urlString: url)
+                .navigationTitle("Split Voyage Group Travel")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+        }
+    }
+}
+
+struct WebViewRepresentable: UIViewRepresentable {
+    let urlString: String
+    
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
+        return webView
+    }
+    
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        if let url = URL(string: urlString) {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            // Could add loading indicator here
+        }
+        
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            // Could handle completion here
+        }
+    }
 }
 
 #Preview {

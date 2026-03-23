@@ -1,6 +1,6 @@
 //
 //  ExpensesListView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -742,7 +742,7 @@ struct EnhancedEmptyExpensesView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Track your trip spending! Add expenses to split costs with your travel buddies and keep your budget on track.")
+                Text("Track your trip spending! Add expenses to split costs with your group members and keep your budget on track.")
                     .font(.body)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -809,7 +809,7 @@ struct EnhancedEmptyBuddiesView: View {
             }
             
             VStack(spacing: 12) {
-                Text("No Travel Buddies Yet")
+                Text("No Group Members Yet")
                     .font(.title2)
                     .fontWeight(.bold)
                 
@@ -912,7 +912,7 @@ struct PermissionBanner: View {
             Button("Got it", role: .cancel) {}
         } message: {
             if permission == .editor {
-                Text("You're a trip editor! You can:\n• Add new expenses\n• Add travel buddies\n• Add itinerary items\n• Record payments\n\nOnly the trip creator can delete items.")
+                Text("You're a trip editor! You can:\n• Add new expenses\n• Add group members\n• Add itinerary items\n• Record payments\n\nOnly the trip creator can delete items.")
             } else {
                 Text("You have view-only access to this trip. You can see all expenses and balances but cannot make changes.\n\nAsk the trip creator to give you editor access.")
             }

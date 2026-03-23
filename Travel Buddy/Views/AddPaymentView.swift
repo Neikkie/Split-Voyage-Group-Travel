@@ -1,6 +1,6 @@
 //
 //  AddPaymentView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -43,7 +43,7 @@ struct AddPaymentView: View {
                 
                 Section("Who Paid") {
                     if trip.travelBuddies.isEmpty {
-                        Text("Add travel buddies first")
+                        Text("Add group members first")
                             .foregroundStyle(.secondary)
                     } else {
                         Picker("Person", selection: $fromBuddyID) {

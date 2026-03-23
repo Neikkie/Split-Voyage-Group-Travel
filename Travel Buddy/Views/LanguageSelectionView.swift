@@ -1,6 +1,6 @@
 //
 //  LanguageSelectionView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //

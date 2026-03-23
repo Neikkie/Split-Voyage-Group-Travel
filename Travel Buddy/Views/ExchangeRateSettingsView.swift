@@ -1,6 +1,6 @@
 //
 //  ExchangeRateSettingsView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/16/26.
 //

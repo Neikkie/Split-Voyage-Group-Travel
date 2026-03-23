@@ -1,6 +1,6 @@
 //
 //  PaymentsView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -35,7 +35,7 @@ struct PaymentsView: View {
                 EmptyStateView(
                     icon: "dollarsign.circle.fill",
                     title: "No Payments Yet",
-                    message: "Record payments between travel buddies to settle up expenses and keep track of who owes what.",
+                    message: "Record payments between group members to settle up expenses and keep track of who owes what.",
                     actionTitle: "Add Payment",
                     action: {
                         showingAddPayment = true

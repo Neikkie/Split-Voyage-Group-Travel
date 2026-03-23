@@ -1,6 +1,6 @@
 //
 //  EditBuddyView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -27,7 +27,7 @@ struct EditBuddyView: View {
                     TextField("Name", text: $buddyName)
                 }
             }
-            .navigationTitle("Edit Travel Buddy")
+            .navigationTitle("Edit Group Member")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

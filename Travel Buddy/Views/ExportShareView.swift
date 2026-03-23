@@ -1,6 +1,6 @@
 //
 //  ExportShareView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -272,7 +272,7 @@ struct ExportShareView: View {
         }
         text += "\n"
         
-        text += "👥 Travel Buddies (\(trip.travelBuddies.count))\n"
+        text += "👥 Group Members (\(trip.travelBuddies.count))\n"
         text += String(repeating: "-", count: 40) + "\n"
         for buddy in trip.travelBuddies {
             let balance = trip.balanceForBuddy(buddy)
@@ -307,7 +307,7 @@ struct ExportShareView: View {
         }
         
         text += "\n\n" + String(repeating: "=", count: 40)
-        text += "\n✨ Shared via Travel Buddy App\n"
+        text += "\n✨ Shared via Split Voyage Group Travel App\n"
         
         let fileName = "\(trip.name.replacingOccurrences(of: " ", with: "_"))_TravelBuddy.txt"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
@@ -321,7 +321,7 @@ struct ExportShareView: View {
         var text = "🌍 \(trip.name)\n"
         text += "📅 Start Date: \(trip.startDate.formatted(date: .long, time: .omitted))\n\n"
         
-        text += "👥 Travel Buddies (\(trip.travelBuddies.count)):\n"
+        text += "👥 Group Members (\(trip.travelBuddies.count)):\n"
         for buddy in trip.travelBuddies {
             text += "   • \(buddy.name)\n"
         }
@@ -342,7 +342,7 @@ struct ExportShareView: View {
             text += "   \(buddy.name): \(trip.currency.format(balance))\n"
         }
         
-        text += "\n\n✨ Shared via Travel Buddy App"
+        text += "\n\n✨ Shared via Split Voyage Group Travel App"
         
         let fileName = "\(trip.name.replacingOccurrences(of: " ", with: "_"))_summary.txt"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)

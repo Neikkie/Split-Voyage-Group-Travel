@@ -1,6 +1,6 @@
 //
 //  AddExpenseView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -60,7 +60,7 @@ struct AddExpenseView: View {
                                 Text("Smart Expense Splitting")
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
-                                Text("Track expenses and split costs fairly with your travel buddies")
+                                Text("Track expenses and split costs fairly with your group members")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -245,7 +245,7 @@ struct AddExpenseView: View {
     private var whoPaidSection: some View {
         Section {
             if trip.travelBuddies.isEmpty {
-                Text("Add travel buddies first")
+                Text("Add group members first")
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(trip.travelBuddies) { buddy in
@@ -318,7 +318,7 @@ struct AddExpenseView: View {
     private var participantsSection: some View {
         Section {
             if trip.travelBuddies.isEmpty {
-                Text("Add travel buddies first")
+                Text("Add group members first")
                     .foregroundStyle(.secondary)
             } else {
                 Button(selectedBuddyIDs.count == trip.travelBuddies.count ? "Deselect All" : "Select All") {

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "travel.png",
+      "filename" : "trip.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "travel 1.png",
+      "filename" : "trip 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "travel 2.png",
+      "filename" : "trip 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

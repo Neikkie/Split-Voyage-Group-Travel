@@ -1,6 +1,6 @@
 //
 //  Expense.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -53,6 +53,8 @@ final class Expense {
     
     // Split configuration
     var splitType: SplitType
+    
+    @Relationship(deleteRule: .cascade, inverse: \ExpenseSplit.expense)
     var splits: [ExpenseSplit]
     
     // Who paid the expense initially (if someone paid for everyone)

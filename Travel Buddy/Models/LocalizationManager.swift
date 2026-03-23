@@ -1,6 +1,6 @@
 //
 //  LocalizationManager.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -150,7 +150,7 @@ struct LocalizedStrings {
         let translations: [String: [AppLanguage: String]] = [
             // Navigation & Common
             "app_name": [
-                .english: "Travel Buddy",
+                .english: "Split Voyage Group Travel",
                 .spanish: "Compañero de Viaje",
                 .french: "Compagnon de Voyage",
                 .german: "Reisebegleiter",

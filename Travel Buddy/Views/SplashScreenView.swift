@@ -1,6 +1,6 @@
 //
 //  SplashScreenView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -113,27 +113,53 @@ struct SplashScreenView: View {
                     }
                 }
                 
-                // App title with character animation
+                // App title with character animation - split into two lines
                 if showTitle {
-                    HStack(spacing: 8) {
-                        ForEach(Array("Travel Buddy".enumerated()), id: \.offset) { index, character in
-                            Text(String(character))
-                                .font(.system(size: 42, weight: .bold, design: .rounded))
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.white, .white.opacity(0.8)],
-                                        startPoint: .top,
-                                        endPoint: .bottom
+                    VStack(spacing: 12) {
+                        // Line 1: "Split Voyage"
+                        HStack(spacing: 6) {
+                            ForEach(Array("Split Voyage".enumerated()), id: \.offset) { index, character in
+                                Text(String(character))
+                                    .font(.system(size: 44, weight: .bold, design: .rounded))
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [.white, .white.opacity(0.8)],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        )
                                     )
-                                )
-                                .shadow(color: .black.opacity(0.3), radius: 10)
-                                .offset(y: isAnimating ? -5 : 5)
-                                .animation(
-                                    .spring(response: 0.5, dampingFraction: 0.6)
-                                    .repeatForever(autoreverses: true)
-                                    .delay(Double(index) * 0.1),
-                                    value: isAnimating
-                                )
+                                    .shadow(color: .black.opacity(0.3), radius: 10)
+                                    .offset(y: isAnimating ? -5 : 5)
+                                    .animation(
+                                        .spring(response: 0.5, dampingFraction: 0.6)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index) * 0.08),
+                                        value: isAnimating
+                                    )
+                            }
+                        }
+                        
+                        // Line 2: "Group Travel"
+                        HStack(spacing: 6) {
+                            ForEach(Array("Group Travel".enumerated()), id: \.offset) { index, character in
+                                Text(String(character))
+                                    .font(.system(size: 44, weight: .bold, design: .rounded))
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [.white, .white.opacity(0.8)],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        )
+                                    )
+                                    .shadow(color: .black.opacity(0.3), radius: 10)
+                                    .offset(y: isAnimating ? -5 : 5)
+                                    .animation(
+                                        .spring(response: 0.5, dampingFraction: 0.6)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index + 13) * 0.08),
+                                        value: isAnimating
+                                    )
+                            }
                         }
                     }
                     .transition(.scale.combined(with: .opacity))

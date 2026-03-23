@@ -1,6 +1,6 @@
 //
 //  EditTripItemView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/13/26.
 //
@@ -212,7 +212,7 @@ struct EditTripItemView: View {
                             Text("This item has been added to expenses")
                                 .foregroundStyle(.green)
                         } else {
-                            Text("Create an expense entry to split the cost of \(trip.currency.format(item.cost)) with your travel buddies")
+                            Text("Create an expense entry to split the cost of \(trip.currency.format(item.cost)) with your group members")
                         }
                     }
                 }
@@ -275,7 +275,7 @@ struct EditTripItemView: View {
                 }
                 Button("Cancel", role: .cancel) { }
             } message: {
-                Text("Create an expense entry for \(item.name) (\(trip.currency.format(item.cost))) to track and split with your \(trip.travelBuddies.count) travel buddy(ies)?")
+                Text("Create an expense entry for \(item.name) (\(trip.currency.format(item.cost))) to track and split with your \(trip.travelBuddies.count) group member(s)?")
             }
             .onAppear {
                 checkIfExpenseExists()

@@ -1,6 +1,6 @@
 //
 //  AddTripView.swift
-//  Travel Buddy
+//  Split Voyage Group Travel
 //
 //  Created by Shanique Beckford on 3/12/26.
 //
@@ -290,7 +290,7 @@ struct AddTripView: View {
                                 InteractiveTipCard(
                                     number: "1",
                                     icon: "person.2.fill",
-                                    title: "Add Travel Buddies",
+                                    title: "Add Group Members",
                                     description: "Invite friends to your trip",
                                     color: .blue,
                                     isSelected: false,
