@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6D8833082F62B0A100753F25 /* Travel Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D8833082F62B0A100753F25 /* Split Voyage Group Travel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Split Voyage Group Travel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		6D8833092F62B0A100753F25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6D8833082F62B0A100753F25 /* Travel Buddy.app */,
+				6D8833082F62B0A100753F25 /* Split Voyage Group Travel.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +53,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6D8833072F62B0A100753F25 /* Travel Buddy */ = {
+		6D8833072F62B0A100753F25 /* Split Voyage Group Travel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6D8833132F62B0A200753F25 /* Build configuration list for PBXNativeTarget "Travel Buddy" */;
+			buildConfigurationList = 6D8833132F62B0A200753F25 /* Build configuration list for PBXNativeTarget "Split Voyage Group Travel" */;
 			buildPhases = (
 				6D8833042F62B0A100753F25 /* Sources */,
 				6D8833052F62B0A100753F25 /* Frameworks */,
@@ -68,12 +68,12 @@
 			fileSystemSynchronizedGroups = (
 				6D88330A2F62B0A100753F25 /* Travel Buddy */,
 			);
-			name = "Travel Buddy";
+			name = "Split Voyage Group Travel";
 			packageProductDependencies = (
 				6DF220D22F6E11F60033181E /* GoogleMobileAds */,
 			);
 			productName = "Travel Buddy";
-			productReference = 6D8833082F62B0A100753F25 /* Travel Buddy.app */;
+			productReference = 6D8833082F62B0A100753F25 /* Split Voyage Group Travel.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -91,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6D8833032F62B0A100753F25 /* Build configuration list for PBXProject "Travel Buddy" */;
+			buildConfigurationList = 6D8833032F62B0A100753F25 /* Build configuration list for PBXProject "Split Voyage Group Travel" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -108,7 +108,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6D8833072F62B0A100753F25 /* Travel Buddy */,
+				6D8833072F62B0A100753F25 /* Split Voyage Group Travel */,
 			);
 		};
 /* End PBXProject section */
@@ -266,6 +266,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Buddy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SVG Travel";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Do you allow us to use your infomation to allow ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -300,6 +301,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Buddy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SVG Travel";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Do you allow us to use your infomation to allow ads?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,7 +328,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6D8833032F62B0A100753F25 /* Build configuration list for PBXProject "Travel Buddy" */ = {
+		6D8833032F62B0A100753F25 /* Build configuration list for PBXProject "Split Voyage Group Travel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D8833112F62B0A200753F25 /* Debug */,
@@ -335,7 +337,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6D8833132F62B0A200753F25 /* Build configuration list for PBXNativeTarget "Travel Buddy" */ = {
+		6D8833132F62B0A200753F25 /* Build configuration list for PBXNativeTarget "Split Voyage Group Travel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D8833142F62B0A200753F25 /* Debug */,

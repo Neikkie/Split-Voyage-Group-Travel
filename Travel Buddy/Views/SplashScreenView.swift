@@ -115,10 +115,33 @@ struct SplashScreenView: View {
                 
                 // App title with character animation
                 if showTitle {
-                    HStack(spacing: 8) {
-                        ForEach(Array("Travel Buddy".enumerated()), id: \.offset) { index, character in
-                            Text(String(character))
-                                .font(.system(size: 42, weight: .bold, design: .rounded))
+                    VStack(spacing: 8) {
+                        HStack(spacing: 8) {
+                            ForEach(Array("Split Voyage".enumerated()), id: \.offset) { index, character in
+                                Text(String(character))
+                                    .font(.system(size: 42, weight: .bold, design: .rounded))
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [.white, .white.opacity(0.8)],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        )
+                                    )
+                                    .shadow(color: .black.opacity(0.3), radius: 10)
+                                    .offset(y: isAnimating ? -5 : 5)
+                                    .animation(
+                                        .spring(response: 0.5, dampingFraction: 0.6)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index) * 0.1),
+                                        value: isAnimating
+                                    )
+                            }
+                        }
+
+                        HStack(spacing: 8) {
+                            ForEach(Array("Group Travel".enumerated()), id: \.offset) { index, character in
+                                Text(String(character))
+                                    .font(.system(size: 32, weight: .semibold, design: .rounded))
                                 .foregroundStyle(
                                     LinearGradient(
                                         colors: [.white, .white.opacity(0.8)],
@@ -134,6 +157,7 @@ struct SplashScreenView: View {
                                     .delay(Double(index) * 0.1),
                                     value: isAnimating
                                 )
+                            }
                         }
                     }
                     .transition(.scale.combined(with: .opacity))
